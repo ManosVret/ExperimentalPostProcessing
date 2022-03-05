@@ -11,8 +11,7 @@ clc
 %% Inputs
 
 % define root path on disk where data is stored
-% diskPath = './DATA';
-diskPath = 'C:\Users\prajw\Documents\Study Stuff\MSc-1\Exp Simulation\BALANCE AND PRESSURE DATA\DATA';
+diskPath = './DATA';
 
 % get indices balance and pressure data files
 [idxB,idxP] = SUP_getIdx;
