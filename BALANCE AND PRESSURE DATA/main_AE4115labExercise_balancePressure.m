@@ -74,7 +74,34 @@ testSec   = 5;    % test-section number
 BAL = BAL_process(diskPath,fn_BAL,fn0,idxB,D,S,b,c,XmRefB,XmRefM,dAoA,dAoS,modelType,modelPos,testSec);
 PRS = PRS_process(diskPath,fn_PRS,idxP);
 
-%% Write your code here to apply the corrections
+
+writetable(struct2table(BAL.windOn.zero_rudder,'AsArray',true),  'BAL.xlsx')
+
+% %% Create new structure (ordered data)
+% 
+% 
+% 
+% 
+% %% Sorting data by engine mode
+% for i =1:length(BAL.windOn.zero_rudder)
+%     if (BAL.windOn.zero_rudder.J_M1[i]-BAL.windOn.zero_rudder.J_M2[i])<0.1
+%         ORDERED.windOn.zerro_rudder.BEO.J_M1[i] = BAL.windOn.zero_rudder.J_M1[i]
+%         
+%     end
+% end
+%         
+% %% Sorting data by rudder deflection 
+% 
+% 
+% 
+% %% Sorting data by stream velocity
+% 
+% 
+% %% Sorting data by advance ratio 
+% 
+% 
+% 
+% %% Write your code here to apply the corrections
 
 % example plot raw data
-figure,plot(BAL.windOn.edef0.AoA,BAL.windOn.edef0.CL,'*')
+% figure,plot(BAL.windOn.edef0.AoA,BAL.windOn.edef0.CL,'*')
