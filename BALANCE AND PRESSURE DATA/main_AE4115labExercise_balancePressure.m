@@ -75,7 +75,26 @@ BAL = BAL_process(diskPath,fn_BAL,fn0,idxB,D,S,b,c,XmRefB,XmRefM,dAoA,dAoS,model
 PRS = PRS_process(diskPath,fn_PRS,idxP);
 
 
-writetable(struct2table(BAL.windOn.zero_rudder,'AsArray',true),  'BAL.xlsx')
+%writetable(struct2table(BAL.windOn.zero_rudder,'AsArray',true),  'BAL.xlsx')
+
+
+%% Loop through Structure:
+
+% Layers of BAL structure
+layer1 = fieldnames(BAL);
+
+for i=2:numel(layer1)
+    windOnOff = fieldnames(BAL.(string(layer1(i))));
+    for j=1:numel(windOnOff)
+        Rudder = fieldnames(BAL.(string(layer1(i))).(string(windOnOff(j))));
+        for k=1:numel(Rudder)
+            Data = BAL.(string(layer1(i))).(string(windOnOff(j))).(string(Rudder(k)))
+            
+        end
+    end
+end
+
+    
 
 % %% Create new structure (ordered data)
 % 
