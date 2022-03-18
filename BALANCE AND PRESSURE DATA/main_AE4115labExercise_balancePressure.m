@@ -83,18 +83,48 @@ PRS = PRS_process(diskPath,fn_PRS,idxP);
 % Layers of BAL structure
 layer1 = fieldnames(BAL);
 
-for i=2:numel(layer1)
-    windOnOff = fieldnames(BAL.(string(layer1(i))));
-    for j=1:numel(windOnOff)
-        Rudder = fieldnames(BAL.(string(layer1(i))).(string(windOnOff(j))));
-        for k=1:numel(Rudder)
-            Data = BAL.(string(layer1(i))).(string(windOnOff(j))).(string(Rudder(k)))
-            
+A0 = []; % Zero Rudder
+A20 = []; % 20 deg rudder
+Am20 = []; % -20deg rudder
+
+for i=3:numel(layer1)
+    windOn = fieldnames(BAL.(string(layer1(i))));
+    for j=1:numel(windOn)
+        Rudder = fieldnames(BAL.(string(layer1(i))).(string(windOn(j))));
+        if j==1
+            rud = 0;
+        elseif j==2
+            rud = 20;
+        elseif j==3
+            rud = -20;
+        end
+        for k=5:(numel(Rudder)-3)
+            Data = BAL.(string(layer1(i))).(string(windOn(j))).(string(Rudder(k)));
+            if rud==0
+                A0 = [A0,Data];
+            elseif rud==20
+                A20 = [A20, Data];
+            elseif rud==-20
+                Am20 = [Am20, Data];
+            end
         end
     end
 end
+n0 = size(A0,1);
+rud0 = zeros(n0,1);
+A0 = [A0,rud0];
 
-    
+n20 = size(A20,1);
+rud20 = 20*ones(n20,1);
+A20 = [A20, rud20];
+
+nm20 = size(Am20,1);
+rudm20 = -20*ones(nm20,1);
+Am20 = [Am20, rudm20];
+
+BIGA = cat(1,A0,A20,Am20);
+% BIGA = cat(1,BIGA,Am20);
+
 
 % %% Create new structure (ordered data)
 % 
