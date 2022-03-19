@@ -123,8 +123,7 @@ rudm20 = -20*ones(nm20,1);
 Am20 = [Am20, rudm20];
 
 BIGGIE = cat(1,A0,A20,Am20);
-save('FULLMAT.mat','BIGGIE')
-
+save(
 
 % %% Create new structure (ordered data)
 % 
