@@ -123,34 +123,26 @@ rudm20 = -20*ones(nm20,1);
 Am20 = [Am20, rudm20];
 
 BIGGIE = cat(1,A0,A20,Am20);
-save('FULLMAT.mat','BIGGIE')
+save('FULLMAT.mat','BIGGIE');
 
+%%Writing struct for parsing BIGA
+structsize = 60;
+fields = struct();
 
-% %% Create new structure (ordered data)
+fid = fopen('fields.csv');
+fnames = fscanf(fid,'%s');
+fnames = split(fnames,',');
+
+function l = name(string)
+    l = find(fnames{:}==string)
+end
+
 % 
-% 
-% 
-% 
-% %% Sorting data by engine mode
-% for i =1:length(BAL.windOn.zero_rudder)
-%     if (BAL.windOn.zero_rudder.J_M1[i]-BAL.windOn.zero_rudder.J_M2[i])<0.1
-%         ORDERED.windOn.zerro_rudder.BEO.J_M1[i] = BAL.windOn.zero_rudder.J_M1[i]
-%         
-%     end
+% for i=1:structsize-1
+%     newf = fnames(i);
+%     fields(1).newf = i;
 % end
-%         
-% %% Sorting data by rudder deflection 
-% 
-% 
-% 
-% %% Sorting data by stream velocity
-% 
-% 
-% %% Sorting data by advance ratio 
-% 
-% 
-% 
-% %% Write your code here to apply the corrections
+
 
 % example plot raw data
 % figure,plot(BAL.windOn.edef0.AoA,BAL.windOn.edef0.CL,'*')
