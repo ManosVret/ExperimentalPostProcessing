@@ -135,5 +135,12 @@ fnames = split(fnames,',');
 
 final_table = array2table(BIGGIE, 'VariableNames', fnames);
 
+% % example of sorting: 
+% for i=1:60:
+%     if final_table.rudder(i) == 0
+%         if ......
+        
+        
+
 % example plot raw data
 % figure,plot(BAL.windOn.edef0.AoA,BAL.windOn.edef0.CL,'*')
