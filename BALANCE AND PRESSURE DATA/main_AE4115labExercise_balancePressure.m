@@ -133,16 +133,7 @@ fid = fopen('fields.csv');
 fnames = fscanf(fid,'%s');
 fnames = split(fnames,',');
 
-function l = name(string)
-    l = find(fnames{:}==string)
-end
-
-% 
-% for i=1:structsize-1
-%     newf = fnames(i);
-%     fields(1).newf = i;
-% end
-
+final_table = array2table(BIGGIE, 'VariableNames', fnames);
 
 % example plot raw data
 % figure,plot(BAL.windOn.edef0.AoA,BAL.windOn.edef0.CL,'*')
