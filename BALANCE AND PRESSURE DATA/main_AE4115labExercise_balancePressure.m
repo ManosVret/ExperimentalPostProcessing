@@ -133,24 +133,13 @@ fid = fopen('fields.csv');
 fnames = fscanf(fid,'%s');
 fnames = split(fnames,',');
 
-BIGGIE = array2table(BIGGIE, 'VariableNames', fnames);
+final_table = array2table(BIGGIE, 'VariableNames', fnames);
 
 % % example of sorting: 
 % for i=1:60:
 %     if final_table.rudder(i) == 0
 %         if ......
-
-BIGGIE.iM2(1:9)=0.2;
-BIGGIE.iM1(5)=0.2;
-
-A0 = BIGGIE(BIGGIE.rudder==0,:);
-A0 = A0(round(A0.iM1,1)==0.2,:);
-A0 = A0(round(A0.iM2,1)==0.2,:);
-plot(A0.CY.^2,A0.CD);
-
-
-
-
+        
         
 
 % example plot raw data
