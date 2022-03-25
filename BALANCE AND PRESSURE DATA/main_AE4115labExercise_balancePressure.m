@@ -136,7 +136,7 @@ fnames = split(fnames,',');
 BIGGIE = array2table(BIGGIE, 'VariableNames', fnames);
 
 BIGGIE.iM2(1:9)=0.2;
-Biggie.iM1(5)=0.2;
+BIGGIE.iM1(5)=0.2;
 
 save('FULLMAT.mat','BIGGIE');
 
