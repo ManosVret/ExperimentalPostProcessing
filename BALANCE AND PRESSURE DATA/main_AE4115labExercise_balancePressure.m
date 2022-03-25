@@ -133,7 +133,12 @@ fid = fopen('fields.csv');
 fnames = fscanf(fid,'%s');
 fnames = split(fnames,',');
 
-final_table = array2table(BIGGIE, 'VariableNames', fnames);
+BIGGIE = array2table(BIGGIE, 'VariableNames', fnames);
+
+BIGGIE.iM2(1:9)=0.2;
+Biggie.iM1(5)=0.2;
+
+save('FULLMAT.mat','BIGGIE');
 
 % % example of sorting: 
 % for i=1:60:
