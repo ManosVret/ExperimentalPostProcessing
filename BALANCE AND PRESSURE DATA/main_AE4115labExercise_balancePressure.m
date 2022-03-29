@@ -138,10 +138,14 @@ diskPath = './DATA';
 % BIGGIE.iM2(1:9)=0.2;
 % BIGGIE.iM1(5)=0.2;
 % 
-% save('FULLMAT.mat','BIGGIE');
+% writetable(BIGGIE,'FULLMAT');
 
 
-load FULLMAT.mat;
+BIGGIE = readtable('FULLMAT.txt');
+load CTs.mat;
+
+
+
 
 % % example of sorting: 
 % for i=1:60:
