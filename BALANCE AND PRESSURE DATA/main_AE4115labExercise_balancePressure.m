@@ -55,9 +55,9 @@ diskPath = './DATA';
 % taper = cT/cR; % taper ratio
 % c     = 2*cR/3*(1+taper+taper^2)/(1+taper); % mean aerodynamic chord [m]
 % 
-% % prop geometry
-% D        = 0.2032; % propeller diameter [m]
-% R        = D/2;   % propeller radius [m]
+% prop geometry
+D        = 0.2032; % propeller diameter [m]
+R        = D/2;   % propeller radius [m]
 % 
 % % moment reference points
 % XmRefB    = [0,0,0.0465/c]; % moment reference points (x,y,z coordinates) in balance reference system [1/c] 
@@ -144,15 +144,42 @@ diskPath = './DATA';
 BIGGIE = readtable('FULLMAT.txt');
 load CTs.mat;
 
+% BIGGIE = addvars(BIGGIE,Thrust,'After','rudder');
 
-
-
-% % example of sorting: 
-% for i=1:60:
-%     if final_table.rudder(i) == 0
-%         if ......
+for i = 1:60
+    
+    j = round(BIGGIE.J_M2(i),1); 
+    
+    if round(BIGGIE.V(i),1) == 20
+        if j == 1.6
+            CT = CTs(1,2);
+        elseif j == 2.0
+            CT = CTs(1,3);
+        elseif j == 2.4
+            CT = CTs(1,4);
+        end
         
+    elseif round(BIGGIE.V(i),1) == 40
+        if j == 1.6
+            CT = CTs(2,2);
+        elseif j == 2.0
+            CT = CTs(2,3);
+        elseif j == 2.4
+            CT = CTs(2,4);
+        end
         
+    end
+        
+    if round(BIGGIE.rpsM1(i),1) == round(BIGGIE.rpsM2(i),1)
+        BIGGIE.Thrust(i) = 2 * CT * BIGGIE.rho(i) * BIGGIE.rpsM2(i)^2 * D^4;  
+        
+    else
+        BIGGIE.Thrust(i) = CT * BIGGIE.rho(i) * BIGGIE.rpsM2(i)^2 * D^4;
+      
+    end
+    
+end
 
+        
 % example plot raw data
 % figure,plot(BAL.windOn.edef0.AoA,BAL.windOn.edef0.CL,'*')
