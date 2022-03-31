@@ -1,7 +1,4 @@
-clear all 
-close all 
-
-load FULLMAT.mat;
+function [eps_solid] = BAL_SolidBlockage()
 
 %% "wing"-type volumes [m3]
 
@@ -42,4 +39,5 @@ epsilon_nacelle = (k3_nacelle * tau_1 * V_nacelle)/(C^(3/2));
 
 %% total 
 
-epsilon_solid = epsilon_wing + epsilon_horiz + epsilon_vert + epsilon_strut + epsilon_fuselage + epsilon_nacelle
+eps_solid = epsilon_wing + epsilon_horiz + epsilon_vert + epsilon_strut + epsilon_fuselage + epsilon_nacelle;
+end

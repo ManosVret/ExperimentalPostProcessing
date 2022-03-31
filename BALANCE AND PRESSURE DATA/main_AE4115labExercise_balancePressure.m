@@ -169,6 +169,8 @@ for i = 1:127
         end
         
     end
+    
+    BIGGIE.CT_actual(i) = CT;
         
     if round(BIGGIE.rpsM1(i),1) == round(BIGGIE.rpsM2(i),1)
         BIGGIE.Thrust(i) = 2 * CT * BIGGIE.rho(i) * BIGGIE.rpsM2(i)^2 * D^4;  
@@ -202,7 +204,30 @@ for i = 1:127
     
 end
 
+%% Adding all epsilons
+for i = 1:127
+    eps_wake = BAL_WakeBlockage(BIGGIE.CD_0(i));
+    
+    eps_slip = BAL_SlipstreamBlockage(BIGGIE.CT_actual(i));
+    
+    eps_solid = BAL_SolidBlockage();
+    
+    BIGGIE.epsilon(i) = eps_wake + eps_slip + eps_solid;
+end
 
+
+%% Creating table for all corrected values 
+BIGGIE_CORRECTED_BLOCK = BIGGIE;
+
+BIGGIE_CORRECTED_BLOCK.V = BIGGIE.V .* (1+BIGGIE.epsilon);
+BIGGIE_CORRECTED_BLOCK.q = BIGGIE.q .* (1+BIGGIE.epsilon).^2;
+BIGGIE_CORRECTED_BLOCK.CL = BIGGIE.CL .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
+BIGGIE_CORRECTED_BLOCK.CD = BIGGIE.CD .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
+BIGGIE_CORRECTED_BLOCK.CYaw = BIGGIE.CYaw .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
+BIGGIE_CORRECTED_BLOCK.CMyaw = BIGGIE.CMyaw .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
+BIGGIE_CORRECTED_BLOCK.CY = BIGGIE.CY .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
+BIGGIE_CORRECTED_BLOCK.CMY = BIGGIE.CMY .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
+    
         
 % example plot raw data
 % figure,plot(BAL.windOn.edef0.AoA,BAL.windOn.edef0.CL,'*')
