@@ -1,7 +1,7 @@
-%function [BIGGIE_Corr_MO] = BAL_ModelOff_Correction(BIGGIE)
+function [BIGGIE_Corr_MO] = BAL_ModelOff_Correction(BIGGIE)
 %% Uncomment function and pass BIGGIE as array
 %% Called BIGGIE for test. 
-BIGGIE = readtable('FULLMAT.txt'); %Comment when in use !!!
+%BIGGIE = readtable('FULLMAT.txt'); %Comment when in use !!!
 BIGGIE_head = fieldnames(BIGGIE)';
 BAL_array = table2array(BIGGIE); %Comment when in use !!!
 %% Data in Corr_mat for AoA = 0 deg
@@ -49,5 +49,5 @@ end
 % BAL_array(i,57) = BAL_array(i,57) - Corr_Mat(1,6); % CMpitch Correction
 % BAL_array(i,59) = BAL_array(i,59) - Corr_Mat(1,7); % CMyaw Correction
 %% Output Model-Off-Corrected BIGGIE Array:
-BIGGIE_Corr_MO = array2table(BAL_array,"VariableNames",BIGGIE_head(1:end-3));
-%end
+BIGGIE_Corr_MO = array2table(BAL_array,"VariableNames",BIGGIE_head(1:end-3))
+end

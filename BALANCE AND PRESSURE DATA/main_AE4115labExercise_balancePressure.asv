@@ -146,104 +146,98 @@ load CTs.mat;
 
 % BIGGIE = addvars(BIGGIE,Thrust,'After','rudder');
 
-% for i = 1:127
-%     
-%     j = round(BIGGIE.J_M2(i),1); 
-%     
-%     if round(BIGGIE.V(i)) == 20
-%         if j == 1.6
-%             CT = CTs(1,2);
-%         elseif j == 2.0
-%             CT = CTs(1,3);
-%         elseif j == 2.4
-%             CT = CTs(1,4);
-%         end
-%         
-%     elseif round(BIGGIE.V(i)) == 40
-%         if j == 1.6
-%             CT = CTs(2,2);
-%         elseif j == 2.0
-%             CT = CTs(2,3);
-%         elseif j == 2.4
-%             CT = CTs(2,4);
-%         end
-%         
-%     end
-%     
-%     BIGGIE.CT_actual(i) = CT;
-%         
-%     if round(BIGGIE.rpsM1(i),1) == round(BIGGIE.rpsM2(i),1)
-%         BIGGIE.Thrust(i) = 2 * CT * BIGGIE.rho(i) * BIGGIE.rpsM2(i)^2 * D^4;  
-%         
-%     else
-%         BIGGIE.Thrust(i) = CT * BIGGIE.rho(i) * BIGGIE.rpsM2(i)^2 * D^4;
-%       
-%     end
-%     
-%     BIGGIE.Drag_unc(i) = BIGGIE.FX(i) + BIGGIE.Thrust(i) * cos(BIGGIE.AoA(i)) * cos(BIGGIE.AoS(i));
-%     
-%     BIGGIE.CD_unc(i) = BIGGIE.Drag_unc(i)/BIGGIE.q(i);
-%     
-% end
-% 
-% 
-% for i = 1:127
-%     BIGGIE_1 = BIGGIE(BIGGIE.rudder == BIGGIE.rudder(i), :);
-%     BIGGIE_1 = BIGGIE_1(round(BIGGIE_1.V,1) == round(BIGGIE.V(i),1), :);
-%     BIGGIE_1 = BIGGIE_1(round(BIGGIE_1.J_M2,1) == round(BIGGIE.J_M2(i),1), :);
-%     
-%     if round(BIGGIE.J_M1(i),1) == round(BIGGIE.J_M2(i),1)
-%         BIGGIE_1 = BIGGIE_1(round(BIGGIE_1.J_M1,1) == round(BIGGIE_1.J_M2,1),:);
-%     elseif round(BIGGIE.J_M1(i),1) ~= round(BIGGIE.J_M2(i),1)
-%         BIGGIE_1 = BIGGIE_1(round(BIGGIE_1.J_M1,1) ~= round(BIGGIE_1.J_M2,1),:);
-%     end
-% 
-%     CD_0 = min(BIGGIE_1.CD);
-%     
-%     BIGGIE.CD_0(i) = CD_0;
-%     
-% end
-% % Start of corrections
-% % model-off -> blockages -> lift interf.
-% BIGGIE_init = BIGGIE;
-% 
-% %% Model-off
-% BIGGIE_Corr_MO = BAL_ModelOff_Correction(BIGGIE);
-% BIGGIE = BIGGIE_Corr_MO;
-% 
-% %% Adding all epsilons
-% for i = 1:127
-%     eps_wake = BAL_WakeBlockage(BIGGIE.CD_0(i));
-%     
-%     eps_slip = BAL_SlipstreamBlockage(BIGGIE.CT_actual(i));
-%     
-%     eps_solid = BAL_SolidBlockage();
-%     
-%     BIGGIE.epsilon(i) = eps_wake + eps_slip + eps_solid;
-% end
-% 
-% 
-% %% Creating table for all corrected values 
-% BIGGIE_CORRECTED_BLOCK = BIGGIE;
-% 
-% BIGGIE_CORRECTED_BLOCK.V = BIGGIE.V .* (1+BIGGIE.epsilon);
-% BIGGIE_CORRECTED_BLOCK.q = BIGGIE.q .* (1+BIGGIE.epsilon).^2;
-% BIGGIE_CORRECTED_BLOCK.CL = BIGGIE.CL .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
-% BIGGIE_CORRECTED_BLOCK.CD = BIGGIE.CD .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
-% BIGGIE_CORRECTED_BLOCK.CYaw = BIGGIE.CYaw .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
-% BIGGIE_CORRECTED_BLOCK.CMyaw = BIGGIE.CMyaw .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
-% BIGGIE_CORRECTED_BLOCK.CY = BIGGIE.CY .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
-% BIGGIE_CORRECTED_BLOCK.CMY = BIGGIE.CMY .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
-% 
-% BIGGIE = BIGGIE_CORRECTED_BLOCK;
-% 
-% %% Lift correction
-% BIGGIE_Corr_lift = BAL_Lift_Correct(BIGGIE);
-% BIGGIE_CORRECTED = BIGGIE_Corr_lift;
-% 
-% writetable(BIGGIE_CORRECTED,'FULLMAT_CORRECTED');
+for i = 1:127
+    
+    j = round(BIGGIE.J_M2(i),1); 
+    
+    if round(BIGGIE.V(i)) == 20
+        if j == 1.6
+            CT = CTs(1,2);
+        elseif j == 2.0
+            CT = CTs(1,3);
+        elseif j == 2.4
+            CT = CTs(1,4);
+        end
+        
+    elseif round(BIGGIE.V(i)) == 40
+        if j == 1.6
+            CT = CTs(2,2);
+        elseif j == 2.0
+            CT = CTs(2,3);
+        elseif j == 2.4
+            CT = CTs(2,4);
+        end
+        
+    end
+    
+    BIGGIE.CT_actual(i) = CT;
+        
+    if round(BIGGIE.rpsM1(i),1) == round(BIGGIE.rpsM2(i),1)
+        BIGGIE.Thrust(i) = 2 * CT * BIGGIE.rho(i) * BIGGIE.rpsM2(i)^2 * D^4;  
+        
+    else
+        BIGGIE.Thrust(i) = CT * BIGGIE.rho(i) * BIGGIE.rpsM2(i)^2 * D^4;
+      
+    end
+    
+    BIGGIE.Drag_unc(i) = BIGGIE.FX(i) + BIGGIE.Thrust(i) * cos(BIGGIE.AoA(i)) * cos(BIGGIE.AoS(i));
+    
+    BIGGIE.CD_unc(i) = BIGGIE.Drag_unc(i)/BIGGIE.q(i);
+    
+end
 
-BIGGIE_CORRECTED = readtable('FULLMAT_CORRECTED.txt');
 
+for i = 1:127
+    BIGGIE_1 = BIGGIE(BIGGIE.rudder == BIGGIE.rudder(i), :);
+    BIGGIE_1 = BIGGIE_1(round(BIGGIE_1.V,1) == round(BIGGIE.V(i),1), :);
+    BIGGIE_1 = BIGGIE_1(round(BIGGIE_1.J_M2,1) == round(BIGGIE.J_M2(i),1), :);
+    
+    if round(BIGGIE.J_M1(i),1) == round(BIGGIE.J_M2(i),1)
+        BIGGIE_1 = BIGGIE_1(round(BIGGIE_1.J_M1,1) == round(BIGGIE_1.J_M2,1),:);
+    elseif round(BIGGIE.J_M1(i),1) ~= round(BIGGIE.J_M2(i),1)
+        BIGGIE_1 = BIGGIE_1(round(BIGGIE_1.J_M1,1) ~= round(BIGGIE_1.J_M2,1),:);
+    end
+
+    CD_0 = min(BIGGIE_1.CD);
+    
+    BIGGIE.CD_0(i) = CD_0;
+    
+end
+% Start of corrections
+% model-off -> blockages -> lift interf.
+BIGGIE_init = BIGGIE
+
+%% Model-off
+BIGGIE_Corr_MO = BAL_ModelOff_Correction(BIGGIE);
+BIGGIE = BIGGIE_Corr_MO
+
+%% Adding all epsilons
+for i = 1:127
+    eps_wake = BAL_WakeBlockage(BIGGIE.CD_0(i));
+    
+    eps_slip = BAL_SlipstreamBlockage(BIGGIE.CT_actual(i));
+    
+    eps_solid = BAL_SolidBlockage();
+    
+    BIGGIE.epsilon(i) = eps_wake + eps_slip + eps_solid;
+end
+
+
+%% Creating table for all corrected values 
+BIGGIE_CORRECTED_BLOCK = BIGGIE;
+
+BIGGIE_CORRECTED_BLOCK.V = BIGGIE.V .* (1+BIGGIE.epsilon);
+BIGGIE_CORRECTED_BLOCK.q = BIGGIE.q .* (1+BIGGIE.epsilon).^2;
+BIGGIE_CORRECTED_BLOCK.CL = BIGGIE.CL .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
+BIGGIE_CORRECTED_BLOCK.CD = BIGGIE.CD .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
+BIGGIE_CORRECTED_BLOCK.CYaw = BIGGIE.CYaw .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
+BIGGIE_CORRECTED_BLOCK.CMyaw = BIGGIE.CMyaw .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
+BIGGIE_CORRECTED_BLOCK.CY = BIGGIE.CY .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
+BIGGIE_CORRECTED_BLOCK.CMY = BIGGIE.CMY .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
+
+BIGGIE = BIGGIE_CORRECTED_BLOCK
+
+%% Lift correction
+        
 % example plot raw data
 % figure,plot(BAL.windOn.edef0.AoA,BAL.windOn.edef0.CL,'*')

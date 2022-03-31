@@ -1,7 +1,7 @@
 %% Compute Lift Interferrence
-%function [BIGGIE_Corr_lift] = BAL_Lift_Correct(BIGGIE)
+function [BIGGIE_Corr_lift] = BAL_Lift_Correct(BIGGIE)
 
-BIGGIE = readtable('FULLMAT.txt'); %Comment when in use !!!
+%BIGGIE = readtable('FULLMAT.txt'); %Comment when in use !!!
 BIGGIE_head = fieldnames(BIGGIE)';
 BAL_array = table2array(BIGGIE); %Comment when in use !!!
 
@@ -52,4 +52,4 @@ end
 
 BIGGIE_Corr_lift = array2table(BAL_array,"VariableNames",BIGGIE_head(1:end-3));
 
-%end
+end
