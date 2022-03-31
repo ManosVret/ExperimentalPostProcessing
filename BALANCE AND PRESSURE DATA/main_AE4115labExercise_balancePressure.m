@@ -178,7 +178,30 @@ for i = 1:127
       
     end
     
+    BIGGIE.Drag_unc(i) = BIGGIE.FX(i) + BIGGIE.Thrust(i) * cos(BIGGIE.AoA(i)) * cos(BIGGIE.AoS(i));
+    
+    BIGGIE.CD_unc(i) = BIGGIE.Drag_unc(i)/BIGGIE.q(i);
+    
 end
+
+
+for i = 1:127
+    BIGGIE_1 = BIGGIE(BIGGIE.rudder == BIGGIE.rudder(i), :);
+    BIGGIE_1 = BIGGIE_1(round(BIGGIE_1.V,1) == round(BIGGIE.V(i),1), :);
+    BIGGIE_1 = BIGGIE_1(round(BIGGIE_1.J_M2,1) == round(BIGGIE.J_M2(i),1), :);
+    
+    if round(BIGGIE.J_M1(i),1) == round(BIGGIE.J_M2(i),1)
+        BIGGIE_1 = BIGGIE_1(round(BIGGIE_1.J_M1,1) == round(BIGGIE_1.J_M2,1),:);
+    elseif round(BIGGIE.J_M1(i),1) ~= round(BIGGIE.J_M2(i),1)
+        BIGGIE_1 = BIGGIE_1(round(BIGGIE_1.J_M1,1) ~= round(BIGGIE_1.J_M2,1),:);
+    end
+
+    CD_0 = min(BIGGIE_1.CD);
+    
+    BIGGIE.CD_0(i) = CD_0;
+    
+end
+
 
         
 % example plot raw data
