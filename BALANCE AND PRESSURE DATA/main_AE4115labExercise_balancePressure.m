@@ -146,11 +146,11 @@ load CTs.mat;
 
 % BIGGIE = addvars(BIGGIE,Thrust,'After','rudder');
 
-for i = 1:60
+for i = 1:127
     
     j = round(BIGGIE.J_M2(i),1); 
     
-    if round(BIGGIE.V(i),1) == 20
+    if round(BIGGIE.V(i)) == 20
         if j == 1.6
             CT = CTs(1,2);
         elseif j == 2.0
@@ -159,7 +159,7 @@ for i = 1:60
             CT = CTs(1,4);
         end
         
-    elseif round(BIGGIE.V(i),1) == 40
+    elseif round(BIGGIE.V(i)) == 40
         if j == 1.6
             CT = CTs(2,2);
         elseif j == 2.0
