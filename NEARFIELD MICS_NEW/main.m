@@ -4,12 +4,12 @@ clc
 
 %% Inputs
 % path to folder containing the measurement data
-fnFolder = './DATA/TEST'
+fnFolder = './DATA/MICS';
 
-fn = {'test.txt',...
-      'test_run1_001.tdms',...
-      'test_run1_001.tdms_index',...
-      'test_run1_001.txt'}%,...
+fn = {'20_rudder.txt'}%,...
+%       'test_run1_001.tdms',...
+%       'test_run1_001.tdms_index',...
+%       'test_run1_001.txt'}%,...
 %       'test_run2_001.tdms',...
 %       'test_run2_001.tdms_index',...
 %       'test_run3_001.tdms',}; % structure of filenames to main txt file containing the averaged data - you can add multiple filenames here
@@ -24,7 +24,7 @@ D = 0.2032; % propeller diameter [m]
 
 %% Load microphone calibration data
 micCal = load('micCalData_AE4115labExercise');
-micCal.F_mics(4:5,:) = NaN;
+%micCal.F_mics(4:5,:) = NaN;
 
 %% Loop over all TDMS files of name "Measurement_i.tdms)" in the specified folder
 for i=1:length(fn)
@@ -70,6 +70,8 @@ for i=1:length(fn)
     
 end % end while loop over files
 
+%%% WITE OUT DATA YOU BITCH
+
 figure('Name','Spectra')
 for i=1:6
     subplot(2,3,i), box on, hold on
@@ -81,3 +83,27 @@ for i=1:6
     title(['Mic ',num2str(i)])
     ylim([50 120])
 end
+
+%% OASPL: 
+for i=1:6
+    subplot(2,3,i), box on, hold on
+    plot(opp{i}.RPS_M1(1),OASPL(MIC{1}.f{1}(:,i),MIC{1}.SPL{1}(:,i)),'b')
+    plot(opp{i}.RPS_M1(2),OASPL(MIC{1}.f{2}(:,i),MIC{1}.SPL{2}(:,i)),'r')
+    %xlim([0 13])
+    xlabel('Engine Setting RPS [Hz]')
+    ylabel('OASPL [dB]')
+    title(['Mic ',num2str(i)])
+    %ylim([50 120])
+end
+
+% OASPL = [[1400,-10];[1600,-5];[2000,0];[2400,5];[3000,10]];
+% RPM = linspace(0,1400,length(OASPL));
+% for i=1:length(OASPL)
+%     plot(RPM(i),OASPL(i,1))
+%     hold on
+%     plot(RPM(i),OASPL(i,1))
+%     hold off
+%     xlabel("RPM [-]") % J
+%     ylabel("OASPL [dB]")
+%     title("OASPL for \delta_{r}=" + str())
+% end
