@@ -126,7 +126,7 @@ J20lp = (round(opp{2}.J_M2,1)==2.0);
 J24lp = (round(opp{2}.J_M2,1)==2.4);
 J16ln = (round(opp{3}.J_M2,1)==1.6);
 J20ln = (round(opp{3}.J_M2,1)==2.0);
-J24ln = (round(opp{1}.J_M2,1)==2.4);
+J24ln = (round(opp{3}.J_M2,1)==2.4);
 
 
 %%PLOTTING
@@ -143,34 +143,71 @@ J24ln = (round(opp{1}.J_M2,1)==2.4);
 %%up exactly. Likely a parsing problem.
 
 plt11 = OEIl0&V20l0&Bn10l0;
+plt11 = OEIl0&V20l0&J16l0;
+
 plt12 = OEIl0&V20l0&Bn5l0;
+plt12 = OEIl0&V20l0&J20l0;
+
 plt13 = OEIl0&V20l0&B0l0;
-plt14 = OEIl0&V20l0&Bp5l0;
-plt15 = OEIl0&V20l0&Bp10l0;
+plt13 = OEIl0&V20l0&J24l0;
 
-y1 = OASPL(opp,MIC,1,plt11);
-x1 = opp{1}.J_M2(plt11);
-y2 = OASPL(opp,MIC,1,plt12);
-x2 = opp{1}.J_M2(plt12);
-y3 = OASPL(opp,MIC,1,plt13);
-x3 = opp{1}.J_M2(plt13);
+% 
+% plt14 = OEIl0&V20l0&Bp5l0;
+% plt15 = OEIl0&V20l0&Bp10l0;
 
-plot(x1,y1);
-hold on
-plot(x2,y2);
-plot(x3,y3);
-hold off
+% y1 = OASPL(opp,MIC,1,plt11);
+% x1 = opp{1}.AoS(plt11);
+% y2 = OASPL(opp,MIC,1,plt12);
+% x2 = opp{1}.AoS(plt12);
+% y3 = OASPL(opp,MIC,1,plt13);
+% x3 = opp{1}.AoS(plt13);
 
-
-
-
+% y4 = OASPL(opp,MIC,1,plt14);
+% x4 = opp{1}.J_M2(plt14);
+% y5 = OASPL(opp,MIC,1,plt15);
+% x5 = opp{1}.J_M2(plt15);
 
 
-%% figure('Name','Spectra')
-% for i=1:6
+
+% plot(x1,y1,'r');
+% hold on
+% plot(x2,y2,'b');
+% plot(x3,y3,'g');
+% plot(x4,y4);
+% plot(x5,y5);
+% hold off
+
+
+
+
+logiclist = {OEIln&V20ln&B0ln,OEIl0&V20l0&B0l0, OEIlp&V20lp&B0lp,OEIln&V40ln&B0ln,OEIl0&V40l0&B0l0, OEIlp&V40lp&B0lp};
+
+% figure('Name','Spectra')
+% for i=1:length(logiclist)
+%     
 %     subplot(2,3,i), box on, hold on
-%     plot(MIC{1}.f{1}/opp{1}.RPS_M1(1),MIC{1}.SPL{1}(:,i),'b')
-%     plot(MIC{1}.f{2}/opp{1}.RPS_M1(2),MIC{1}.SPL{2}(:,i),'r')
+%     
+%     if i==1 || i==4
+%         f1 = MIC{2}.f(logiclist{i});
+%         SPL1 = MIC{2}.SPL(logiclist{i});
+%         RPSM2 = opp{2}.RPS_M2(logiclist{i});
+%         plot(f1{1}/RPSM2(1),SPL1{1}(:,6),'color','r');
+%         hold on
+%         plot(f1{2}/RPSM2(2),SPL1{2}(:,6),'color','#77AC30');
+%         
+%         plot(f1{3}/RPSM2(3),SPL1{3}(:,6),'color','#0072FF');
+%         hold off
+%         xlim([0 1.5])
+%         xlabel('Frequency f/RPS(M2) [-]')
+%         ylabel('SPL [dB]')
+%         legend('J=1.6','J=2.0','J=2.4')
+%         title('\delta_{r}=20°, V = 40 m/s')
+%         ylim([30 110])
+%         
+%         
+% 
+%     
+%     
 %     xlim([0 13])
 %     xlabel('Frequency f/RPS [-]')
 %     ylabel('SPL [dB]')
