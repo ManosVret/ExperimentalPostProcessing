@@ -142,10 +142,10 @@ R        = D/2;   % propeller radius [m]
 
 
 BIGGIE = readtable('FULLMAT.txt');
-load CTs.mat;
-
-% BIGGIE = addvars(BIGGIE,Thrust,'After','rudder');
-
+% load CTs.mat;
+% 
+% % BIGGIE = addvars(BIGGIE,Thrust,'After','rudder');
+% 
 % for i = 1:127
 %     
 %     j = round(BIGGIE.J_M2(i),1); 
@@ -203,7 +203,7 @@ load CTs.mat;
 %     BIGGIE.CD_0(i) = CD_0;
 %     
 % end
-% % Start of corrections
+% %% Start of corrections
 % % model-off -> blockages -> lift interf.
 % BIGGIE_init = BIGGIE;
 % 
@@ -222,7 +222,6 @@ load CTs.mat;
 %     BIGGIE.epsilon(i) = eps_wake + eps_slip + eps_solid;
 % end
 % 
-% 
 % %% Creating table for all corrected values 
 % BIGGIE_CORRECTED_BLOCK = BIGGIE;
 % 
@@ -232,8 +231,13 @@ load CTs.mat;
 % BIGGIE_CORRECTED_BLOCK.CD = BIGGIE.CD .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
 % BIGGIE_CORRECTED_BLOCK.CYaw = BIGGIE.CYaw .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
 % BIGGIE_CORRECTED_BLOCK.CMyaw = BIGGIE.CMyaw .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
+% 
 % BIGGIE_CORRECTED_BLOCK.CY = BIGGIE.CY .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
 % BIGGIE_CORRECTED_BLOCK.CMY = BIGGIE.CMY .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
+% BIGGIE_CORRECTED_BLOCK.CMZ = BIGGIE.CMZ .* (BIGGIE.q ./ BIGGIE_CORRECTED_BLOCK.q);
+% 
+% BIGGIE_CORRECTED_BLOCK.J_M1 = BIGGIE.J_M1 .* (BIGGIE.V ./ BIGGIE_CORRECTED_BLOCK.V);
+% BIGGIE_CORRECTED_BLOCK.J_M2 = BIGGIE.J_M2 .* (BIGGIE.V ./ BIGGIE_CORRECTED_BLOCK.V);
 % 
 % BIGGIE = BIGGIE_CORRECTED_BLOCK;
 % 
@@ -245,5 +249,57 @@ load CTs.mat;
 
 BIGGIE_CORRECTED = readtable('FULLMAT_CORRECTED.txt');
 
-% example plot raw data
-% figure,plot(BAL.windOn.edef0.AoA,BAL.windOn.edef0.CL,'*')
+
+%% Plotting CN vs rudder deflection
+
+BIGGIE_CORRECTED = BIGGIE_CORRECTED(round(BIGGIE_CORRECTED.J_M1,1) ~= round(BIGGIE_CORRECTED.J_M2,1),:); % OEI
+BIGGIE_CORRECTED = BIGGIE_CORRECTED(BIGGIE_CORRECTED.V > 23,:);
+BIGGIE_CORRECTED = BIGGIE_CORRECTED(BIGGIE_CORRECTED.J_M2 > 2.05 & BIGGIE_CORRECTED.J_M2 < 2.6,:);
+% BIGGIE_CORRECTED = BIGGIE_CORRECTED(BIGGIE_CORRECTED.rudder == 0,:);
+
+BIGGIE_CORRECTED = sortrows(BIGGIE_CORRECTED,'rudder'); 
+
+% CN0 = interp1(BIGGIE_CORRECTED.CMZ(round(BIGGIE_CORRECTED.AoS,1) == 0,:),BIGGIE_CORRECTED.rudder(round(BIGGIE_CORRECTED.AoS,1) == 0,:),0)
+% CN5 = interp1(BIGGIE_CORRECTED.CMZ(round(BIGGIE_CORRECTED.AoS,1) == 5,:),BIGGIE_CORRECTED.rudder(round(BIGGIE_CORRECTED.AoS,1) == 5,:),0)
+
+figure,plot(BIGGIE_CORRECTED.rudder(round(BIGGIE_CORRECTED.AoS,1) == -10,:),BIGGIE_CORRECTED.CMZ(round(BIGGIE_CORRECTED.AoS,1) == -10,:),'-*')
+
+hold on
+
+plot(BIGGIE_CORRECTED.rudder(round(BIGGIE_CORRECTED.AoS,1) == -5,:),BIGGIE_CORRECTED.CMZ(round(BIGGIE_CORRECTED.AoS,1) == -5,:),'-o')
+
+plot(BIGGIE_CORRECTED.rudder(round(BIGGIE_CORRECTED.AoS,1) == 0,:),BIGGIE_CORRECTED.CMZ(round(BIGGIE_CORRECTED.AoS,1) == 0,:),'-v')
+
+plot(BIGGIE_CORRECTED.rudder(round(BIGGIE_CORRECTED.AoS,1) == 5,:),BIGGIE_CORRECTED.CMZ(round(BIGGIE_CORRECTED.AoS,1) == 5,:),'-s')
+
+plot(BIGGIE_CORRECTED.rudder(round(BIGGIE_CORRECTED.AoS,1) == 10,:),BIGGIE_CORRECTED.CMZ(round(BIGGIE_CORRECTED.AoS,1) == 10,:),'-+')
+
+
+hold off
+
+title('CN vs Rudder Deflection - OEI case; V=40m/s; J=2.4')
+xlabel('Rudder Deflection δr [deg]') 
+ylabel('Yaw Moment Coefficient CN [-]') 
+legend('β = -10°','β = -5°','β = 0°','β = 5°','β = 10°')
+
+%% Plotting CY vs rudder deflection 
+
+
+figure,plot(BIGGIE_CORRECTED.rudder(round(BIGGIE_CORRECTED.AoS,1) == -10,:),BIGGIE_CORRECTED.CY(round(BIGGIE_CORRECTED.AoS,1) == -10,:),'-*')
+
+hold on
+
+plot(BIGGIE_CORRECTED.rudder(round(BIGGIE_CORRECTED.AoS,1) == -5,:),BIGGIE_CORRECTED.CY(round(BIGGIE_CORRECTED.AoS,1) == -5,:),'-o')
+
+plot(BIGGIE_CORRECTED.rudder(round(BIGGIE_CORRECTED.AoS,1) == 0,:),BIGGIE_CORRECTED.CY(round(BIGGIE_CORRECTED.AoS,1) == 0,:),'-v')
+
+plot(BIGGIE_CORRECTED.rudder(round(BIGGIE_CORRECTED.AoS,1) == 5,:),BIGGIE_CORRECTED.CY(round(BIGGIE_CORRECTED.AoS,1) == 5,:),'-s')
+
+plot(BIGGIE_CORRECTED.rudder(round(BIGGIE_CORRECTED.AoS,1) == 10,:),BIGGIE_CORRECTED.CY(round(BIGGIE_CORRECTED.AoS,1) == 10,:),'-+')
+
+hold off
+
+title('CY vs Rudder Deflection - OEI case; V=40m/s; J=2.4')
+xlabel('Rudder Deflection δr [deg]') 
+ylabel('Side Force Coefficient CY [-]') 
+legend('β = -10°','β = -5°','β = 0°','β = 5°','β = 10°')
